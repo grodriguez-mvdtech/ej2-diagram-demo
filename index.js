@@ -1241,6 +1241,7 @@ diagram = new ej.diagrams.Diagram({
   contextMenuClick: contextMenuClick,
   snapSettings: { constraints: ej.diagrams.SnapConstraints.ShowLines },
   dragEnter: dragEnter,
+  collectionChange
 });
 diagram.appendTo('#diagram');
 diagram.fitToPage();
@@ -1280,3 +1281,64 @@ var palette = new ej.diagrams.SymbolPalette({
 });
 palette.appendTo('#symbolpalette');
 paletteIconClick();
+
+function cleanNode(node) {
+  for (let key in node) {
+      try {
+          if (["fillColor", "borderColor", "borderWidth", "borderDashArray", "opacity", "gradient", "type", "name", "width", "height", "offsetX", "offsetY", "zOrder", "zIndex", "rotateAngle", "pivot", "shape", "activity", "subProcess", "task", "orientation", "isSwimlane", "phaseSize", "pathData", "parent", "source" /*, "points"*/, "scale"].includes(key)) continue
+          if ("labels" === key) {
+              // node[key].forEach(function (label) {
+              //     for (let keyProp in label) {
+              //         if (["bold", "fontColor", "fontFamily", "fontSize", "textAlign", "horizontalAlignment", "text", "italic", "name", "margin"].includes(keyProp)) continue
+              //         delete label[keyProp]
+              //     }
+              // })
+          }
+          else if ("ports" === key) {
+              node[key].forEach(function (port) {
+                  for (let keyProp in port) {
+                      if (["offset", "parent", "shape", "name"].includes(keyProp)) continue
+                      delete port[keyProp]
+                  }
+              })
+          }
+          else if ("header" === key) {
+              continue
+              for (let keyProp in node[key]) {
+                  if (["text"].includes(keyProp)) continue
+                  delete node[key][keyProp]
+              }
+          }
+          else if ("lanes" === key) {
+              continue
+              node[key].forEach(function (lane) {
+                  for (let keyProp in lane) {
+                      if (keyProp == "children") {
+                          lane['children'].forEach(function (childNode) {
+                              cleanNode(childNode)
+                          })
+                      }
+                  }
+              })
+          }
+          else if ("phases" === key) {
+              node[key].forEach(function (phase) {
+                  for (let keyProp in phase) {
+                      if (["label", 'labels'].includes(keyProp)) {
+                          phase["label"] = phase['labels'][0]
+                      } else if (!['offset', 'offsetX', 'offsetY'].includes(keyProp)) {
+                          delete phase[keyProp]
+                      }
+                  }
+              })
+              delete node[key]['labels']
+          }
+          else {
+              delete node[key]
+          }
+      } catch (error) {
+          console.error(key, error)
+      }
+
+  }
+}
