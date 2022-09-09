@@ -1045,6 +1045,7 @@ function contextMenuClick(args) {
     diagram.dataBind();
   }
 }
+
 function contextMenuOpen(args) {
   var hiddenId = [];
   if (args.element.className !== 'e-menu-parent e-ul ') {
@@ -1221,27 +1222,18 @@ function contextMenuOpen(args) {
   args.hiddenItems = hiddenId;
 }
 
-function paletteIconClick() {
-  var isMobile = window.matchMedia('(max-width:550px)').matches;
-  if (isMobile) {
-    var element = document.getElementById('palette-icon');
-    if (element) {
-      element.addEventListener('click', showPaletteToolbar, false);
-    }
-  }
-}
 
 diagram = new ej.diagrams.Diagram({
   width: '100%',
   height: '800px',
   nodes: nodes,
   connectors: connectors,
-  contextMenuSettings: contextMenu,
-  contextMenuOpen: contextMenuOpen,
-  contextMenuClick: contextMenuClick,
+  //contextMenuSettings: contextMenu,
+  //contextMenuOpen: contextMenuOpen,
+  //contextMenuClick: contextMenuClick,
   snapSettings: { constraints: ej.diagrams.SnapConstraints.ShowLines },
-  dragEnter: dragEnter,
-  collectionChange
+  //dragEnter: dragEnter,
+  collectionChange:collectionChange
 });
 diagram.appendTo('#diagram');
 diagram.fitToPage();
@@ -1280,65 +1272,260 @@ var palette = new ej.diagrams.SymbolPalette({
   },
 });
 palette.appendTo('#symbolpalette');
-paletteIconClick();
 
-function cleanNode(node) {
-  for (let key in node) {
-      try {
-          if (["fillColor", "borderColor", "borderWidth", "borderDashArray", "opacity", "gradient", "type", "name", "width", "height", "offsetX", "offsetY", "zOrder", "zIndex", "rotateAngle", "pivot", "shape", "activity", "subProcess", "task", "orientation", "isSwimlane", "phaseSize", "pathData", "parent", "source" /*, "points"*/, "scale"].includes(key)) continue
-          if ("labels" === key) {
-              // node[key].forEach(function (label) {
-              //     for (let keyProp in label) {
-              //         if (["bold", "fontColor", "fontFamily", "fontSize", "textAlign", "horizontalAlignment", "text", "italic", "name", "margin"].includes(keyProp)) continue
-              //         delete label[keyProp]
-              //     }
-              // })
-          }
-          else if ("ports" === key) {
-              node[key].forEach(function (port) {
-                  for (let keyProp in port) {
-                      if (["offset", "parent", "shape", "name"].includes(keyProp)) continue
-                      delete port[keyProp]
-                  }
-              })
-          }
-          else if ("header" === key) {
-              continue
-              for (let keyProp in node[key]) {
-                  if (["text"].includes(keyProp)) continue
-                  delete node[key][keyProp]
-              }
-          }
-          else if ("lanes" === key) {
-              continue
-              node[key].forEach(function (lane) {
-                  for (let keyProp in lane) {
-                      if (keyProp == "children") {
-                          lane['children'].forEach(function (childNode) {
-                              cleanNode(childNode)
-                          })
+
+function collectionChange(args) {
+  const { element, state, type } = args
+  if (element instanceof Node) {
+
+      const nodeType = element.shape.type
+      if (state === 'Changed' && type === 'Addition' && nodeType === 'SwimLane') {
+
+          (function (swimLaneId) {
+              setTimeout(function () {
+                  const saveData = JSON.parse(diagram.saveDiagram())
+                  const nodes = saveData.nodes
+                  nodes.forEach(function (node) {
+                      cleanNode(node)
+                  });
+                  // const swimLaneNode = nodes.find(e => e.id === swimLaneId)
+                  const swimLaneNode = nodes.find(e => e?.shape?.type === "SwimLane")
+                  //const swimLaneNode = diagram.nodes.find(e => e.id === swimLaneId)
+                  //const othersNodes = nodes.filter(e => e.id !== swimLaneId)
+                  const othersNodes = nodes.filter(e => e?.shape?.type !== "SwimLane")
+                  let minOffsetX = Number.MAX_SAFE_INTEGER
+                  let minOffsetY = Number.MAX_SAFE_INTEGER
+                  let maxOffsetX = Number.MIN_SAFE_INTEGER
+                  let maxOffsetY = Number.MIN_SAFE_INTEGER
+                  let plusWidth, plusHeigth
+                  for (let index = 0; index < othersNodes.length; index++) {
+                      const node = othersNodes[index];
+                      if (minOffsetX > node.offsetX) {
+                          minOffsetX = node.offsetX
+                      }
+                      if (maxOffsetX < node.offsetX) {
+                          maxOffsetX = node.offsetX
+                          plusWidth = node.width / 2
+                      }
+                      if (minOffsetY > node.offsetY) {
+                          minOffsetY = node.offsetY
+                      }
+                      if (maxOffsetY < node.offsetY) {
+                          maxOffsetY = node.offsetY
+                          plusHeigth = node.height / 2
                       }
                   }
-              })
-          }
-          else if ("phases" === key) {
-              node[key].forEach(function (phase) {
-                  for (let keyProp in phase) {
-                      if (["label", 'labels'].includes(keyProp)) {
-                          phase["label"] = phase['labels'][0]
-                      } else if (!['offset', 'offsetX', 'offsetY'].includes(keyProp)) {
-                          delete phase[keyProp]
+                  const swimLaneNodeOffsetX = minOffsetX - 100
+                  const swimLaneNodeOffsetY = minOffsetY - 100
+
+
+
+
+                  swimLaneNode.width = maxOffsetX - minOffsetX + plusWidth + 100
+                  swimLaneNode.height = maxOffsetY - minOffsetY + plusHeigth + 100
+                  swimLaneNode.offsetX = 50
+                  swimLaneNode.offsetY = 50
+                  swimLaneNode.pivot = { x: 0, y: 0 }
+                  swimLaneNode.shape.lanes[0].children = othersNodes
+                  swimLaneNode.shape.lanes[0].children.forEach(node => {
+                      node.zIndex += swimLaneNode.zIndex
+                      node.offsetX += 50
+                      node.offsetY += 50
+                  })
+                  // diagram.nodes = [swimLaneNode]
+                  // diagram.refresh()
+
+
+
+
+                  let scrollSettings = saveData.scrollSettings
+                  let connectors = saveData.connectors
+
+
+                  connectors.forEach(function (connector) {
+                      connector.zIndex += swimLaneNode.zIndex
+                      for (let key in connector) {
+                          if (["name", "lineDashArray", "segments", "sourcePoint", "targetPoint", "lineColor", "lineWidth", "constraints", "opacity", "parent", "lineHitPadding", "targetNode", "targetPort", "sourceNode", "sourcePort", "horizontalAlign", "verticalAlign", "cornerRadius", "bridgeSpace", "sourcePadding", "targetPadding", "type", "cssClass", "defaultType", 'targetID', 'sourceID'].includes(key)) continue
+                          if (["targetDecorator", "sourceDecorator"].includes(key)) {
+                              for (let keyProp in connector[key]) {
+                                  if (["borderColor", "borderWidth", "fillColor", "height", "pathData", "shape", "width"].includes(keyProp)) continue
+                                  delete connector[key][keyProp]
+                              }
+                          }
+                          else if ("segments" === key) {
+                              connector[key].forEach(function (segment) {
+                                  for (let keyProp in segment) {
+                                      if (!keyProp.startsWith('_')) continue
+                                      delete segment[keyProp]
+                                  }
+                              })
+                          }
+                          else if ("labels" === key) {
+                              connector[key].forEach(function (label) {
+                                  for (let keyProp in label) {
+                                      if (["bold", "fontColor", "fontFamily", "fontSize", "textAlign", "horizontalAlignment", "text", "italic", "name", "margin"].includes(keyProp)) continue
+                                      delete label[keyProp]
+                                  }
+                              })
+                          }
+                          else {
+                              delete connector[key]
+                          }
                       }
-                  }
-              })
-              delete node[key]['labels']
-          }
-          else {
-              delete node[key]
-          }
-      } catch (error) {
-          console.error(key, error)
+                  })
+                  diagram = new Diagram({
+                      connectors,
+                      contextMenuSettings: contextMenu,
+                      height: '100%',
+                      nodes: [swimLaneNode],
+                      scrollSettings,
+                      snapSettings: {
+                          constraints: SnapConstraints.ShowLines
+                      },
+                      width: '100%',
+                      collectionChange: collectionChange,
+                      contextMenuOpen: contextMenuOpen,
+                      contextMenuClick: contextMenuClick,
+                      // dragEnter: dragEnter,
+                  })
+                  document.querySelector('div.diagram-container').innerHTML = '<div id="symbolpalette"></div><div id="diagram"></div>'
+                  diagram.appendTo('#diagram');
+                  diagram.fitToPage({ mode: 'Width' });
+                  palette.appendTo('#symbolpalette');
+
+              }, 300)
+          })(element.id)
       }
-
   }
+
+  console.log(args)
 }
+
+
+/*
+function collectionChange(args) {
+  const { element, state, type } = args
+  if (element instanceof Node) {
+
+      const nodeType = element.shape.type
+      if (state === 'Changed' && type === 'Addition' && nodeType === 'SwimLane') {
+
+          (function (swimLaneId) {
+              setTimeout(function () {
+                  const saveData = JSON.parse(diagram.saveDiagram())
+                  const nodes = saveData.nodes
+                  nodes.forEach(function (node) {
+                      cleanNode(node)
+                  });
+                  // const swimLaneNode = nodes.find(e => e.id === swimLaneId)
+                  const swimLaneNode = nodes.find(e => e?.shape?.type === "SwimLane")
+                  //const swimLaneNode = diagram.nodes.find(e => e.id === swimLaneId)
+                  //const othersNodes = nodes.filter(e => e.id !== swimLaneId)
+                  const othersNodes = nodes.filter(e => e?.shape?.type !== "SwimLane")
+                  let minOffsetX = Number.MAX_SAFE_INTEGER
+                  let minOffsetY = Number.MAX_SAFE_INTEGER
+                  let maxOffsetX = Number.MIN_SAFE_INTEGER
+                  let maxOffsetY = Number.MIN_SAFE_INTEGER
+                  let plusWidth, plusHeigth
+                  for (let index = 0; index < othersNodes.length; index++) {
+                      const node = othersNodes[index];
+                      if (minOffsetX > node.offsetX) {
+                          minOffsetX = node.offsetX
+                      }
+                      if (maxOffsetX < node.offsetX) {
+                          maxOffsetX = node.offsetX
+                          plusWidth = node.width / 2
+                      }
+                      if (minOffsetY > node.offsetY) {
+                          minOffsetY = node.offsetY
+                      }
+                      if (maxOffsetY < node.offsetY) {
+                          maxOffsetY = node.offsetY
+                          plusHeigth = node.height / 2
+                      }
+                  }
+                  const swimLaneNodeOffsetX = minOffsetX - 100
+                  const swimLaneNodeOffsetY = minOffsetY - 100
+
+
+
+
+                  swimLaneNode.width = maxOffsetX - minOffsetX + plusWidth + 100
+                  swimLaneNode.height = maxOffsetY - minOffsetY + plusHeigth + 100
+                  swimLaneNode.offsetX = 50
+                  swimLaneNode.offsetY = 50
+                  swimLaneNode.pivot = { x: 0, y: 0 }
+                  swimLaneNode.shape.lanes[0].children = othersNodes
+                  swimLaneNode.shape.lanes[0].children.forEach(node => {
+                      node.zIndex += swimLaneNode.zIndex
+                      node.offsetX += 50
+                      node.offsetY += 50
+                  })
+                  // diagram.nodes = [swimLaneNode]
+                  // diagram.refresh()
+
+
+
+
+                  let scrollSettings = saveData.scrollSettings
+                  let connectors = saveData.connectors
+
+
+                  connectors.forEach(function (connector) {
+                      connector.zIndex += swimLaneNode.zIndex
+                      for (let key in connector) {
+                          if (["name", "lineDashArray", "segments", "sourcePoint", "targetPoint", "lineColor", "lineWidth", "constraints", "opacity", "parent", "lineHitPadding", "targetNode", "targetPort", "sourceNode", "sourcePort", "horizontalAlign", "verticalAlign", "cornerRadius", "bridgeSpace", "sourcePadding", "targetPadding", "type", "cssClass", "defaultType", 'targetID', 'sourceID'].includes(key)) continue
+                          if (["targetDecorator", "sourceDecorator"].includes(key)) {
+                              for (let keyProp in connector[key]) {
+                                  if (["borderColor", "borderWidth", "fillColor", "height", "pathData", "shape", "width"].includes(keyProp)) continue
+                                  delete connector[key][keyProp]
+                              }
+                          }
+                          else if ("segments" === key) {
+                              connector[key].forEach(function (segment) {
+                                  for (let keyProp in segment) {
+                                      if (!keyProp.startsWith('_')) continue
+                                      delete segment[keyProp]
+                                  }
+                              })
+                          }
+                          else if ("labels" === key) {
+                              connector[key].forEach(function (label) {
+                                  for (let keyProp in label) {
+                                      if (["bold", "fontColor", "fontFamily", "fontSize", "textAlign", "horizontalAlignment", "text", "italic", "name", "margin"].includes(keyProp)) continue
+                                      delete label[keyProp]
+                                  }
+                              })
+                          }
+                          else {
+                              delete connector[key]
+                          }
+                      }
+                  })
+                  diagram = new Diagram({
+                      connectors,
+                      contextMenuSettings: contextMenu,
+                      height: '100%',
+                      nodes: [swimLaneNode],
+                      scrollSettings,
+                      snapSettings: {
+                          constraints: SnapConstraints.ShowLines
+                      },
+                      width: '100%',
+                      collectionChange: collectionChange,
+                      contextMenuOpen: contextMenuOpen,
+                      contextMenuClick: contextMenuClick,
+                      // dragEnter: dragEnter,
+                  })
+                  document.querySelector('div.diagram-container').innerHTML = '<div id="symbolpalette"></div><div id="diagram"></div>'
+                  diagram.appendTo('#diagram');
+                  diagram.fitToPage({ mode: 'Width' });
+                  palette.appendTo('#symbolpalette');
+
+              }, 300)
+          })(element.id)
+      }
+  }
+
+  console.log(args)
+}*/
