@@ -4,7 +4,7 @@ ej.diagrams.Diagram.Inject(
   ej.diagrams.DiagramContextMenu
 );
 ej.diagrams.SymbolPalette.Inject(ej.diagrams.BpmnDiagrams);
-var diagram;
+window.diagram;
 var nodes = [
   {
     id: 'start',
@@ -1272,7 +1272,10 @@ var palette = new ej.diagrams.SymbolPalette({
 });
 palette.appendTo('#symbolpalette');
 
+let firstAdded = false;
+
 function collectionChange(args) {
+
   const { element, state, type } = args;
   if (element instanceof ej.diagrams.Node) {
     const nodeType = element.shape.type;
@@ -1280,26 +1283,33 @@ function collectionChange(args) {
       state === 'Changed' &&
       type === 'Addition' &&
       nodeType === 'SwimLane' &&
-      diagram.nodes.filter((e) => e.shape.type !== 'SwimLane')
+      !firstAdded
     ) {
+      firstAdded = true;
       const saveData = JSON.parse(diagram.saveDiagram());
       const nodes = saveData.nodes;
       const clonedNodesToAdd = nodes
         .filter((e) => e?.shape?.type !== 'SwimLane')
-        .map((e) => ej.diagrams.clonedObject(e));
-      const swimLaneNode = ej.diagrams.clonedObject(
+        .map((e) => ej.diagrams.cloneObject(e));
+      const swimLaneNode = ej.diagrams.cloneObject(
         nodes.find((e) => e?.shape?.type === 'SwimLane')
       );
 
       diagram.clear();
+
+      //swimLaneNode.width = 400;
+      //swimLaneNode.heigth = 400;
       diagram.add(swimLaneNode);
+
       for (let i = 0; i < clonedNodesToAdd.length; i++) {
-        diagram.addNodeToLane(clonedNodesToAdd[i], 'swimlane', swimLaneNode.id);
+        diagram.addNodeToLane(
+          clonedNodesToAdd[i],
+          swimLaneNode.id,
+          swimLaneNode.shape.lanes[0].id
+        );
       }
     }
   }
-
-  console.log(args);
 }
 
 function collectionChange2(args) {
