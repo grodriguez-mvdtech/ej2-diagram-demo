@@ -1302,8 +1302,18 @@ function collectionChange(args) {
       diagram.add(swimLaneNode);
 
       for (let i = 0; i < clonedNodesToAdd.length; i++) {
+        let node = {
+          id: clonedNodesToAdd[i].id,
+          width: clonedNodesToAdd[i].width,
+          height: clonedNodesToAdd[i].height,
+          shape: clonedNodesToAdd[i].shape,
+          annotations: clonedNodesToAdd[i].annotations,
+          //margin: { left: marginLeft, top: 20 },
+          offsetX: clonedNodesToAdd[i].offsetX,
+          offsetY: clonedNodesToAdd[i].offsetY,
+        };
         diagram.addNodeToLane(
-          clonedNodesToAdd[i],
+          node,
           swimLaneNode.id,
           swimLaneNode.shape.lanes[0].id
         );
