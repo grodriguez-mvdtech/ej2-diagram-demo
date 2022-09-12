@@ -7,6 +7,13 @@ ej.diagrams.SymbolPalette.Inject(ej.diagrams.BpmnDiagrams);
 
 const bpmnShapes = [
   {
+    annotations: [
+      {
+        content: 'Event',
+        margin: { top: 15 },
+        offset: { x: 0.5, y: 1 },
+      },
+    ],
     height: 40,
     id: 'Event',
     shape: {
@@ -19,6 +26,11 @@ const bpmnShapes = [
     width: 40,
   },
   {
+    annotations: [
+      {
+        content: 'Default task',
+      },
+    ],
     height: 80,
     id: 'Task',
     shape: {
@@ -35,6 +47,11 @@ const bpmnShapes = [
     width: 140,
   },
   {
+    annotations: [
+      {
+        content: 'Default process',
+      },
+    ],
     height: 80,
     id: 'Transaction',
     shape: {
@@ -58,6 +75,13 @@ const bpmnShapes = [
     // },
   },
   {
+    annotations: [
+      {
+        content: 'Gateway',
+        margin: { top: 15 },
+        offset: { x: 0.5, y: 1 },
+      },
+    ],
     height: 40,
     id: 'Gateway',
     shape: {
@@ -70,6 +94,13 @@ const bpmnShapes = [
     width: 40,
   },
   {
+    annotations: [
+      {
+        content: 'Data object',
+        margin: { top: 15 },
+        offset: { x: 0.5, y: 1 },
+      },
+    ],
     height: 40,
     id: 'DataObject',
     shape: {
@@ -80,9 +111,16 @@ const bpmnShapes = [
       shape: 'DataObject',
       type: 'Bpmn',
     },
-    width: 40,
+    width: 30,
   },
   {
+    annotations: [
+      {
+        content: 'Subprocess',
+        margin: { bottom: 15 },
+        offset: { x: 0.5, y: 1 },
+      },
+    ],
     id: 'SubProcess',
     height: 250,
     shape: {
@@ -105,6 +143,13 @@ const bpmnShapes = [
     width: 520,
   },
   {
+    annotations: [
+      {
+        content: 'Data source',
+        margin: { top: 15 },
+        offset: { x: 0.5, y: 1 },
+      },
+    ],
     height: 40,
     id: 'DataSource',
     shape: {
@@ -128,6 +173,13 @@ const bpmnShapes = [
     width: 180,
   },
   {
+    annotations: [
+      {
+        content: 'Message',
+        margin: { top: 15 },
+        offset: { x: 0.5, y: 1 },
+      },
+    ],
     height: 30,
     id: 'Message',
     shape: {
@@ -137,58 +189,61 @@ const bpmnShapes = [
     width: 40,
   },
 ];
+
 const swimlaneShapes = [
   {
-    id: 'stackCanvas1',
     addInfo: { tooltip: 'Horizontal swimlane' },
+    id: 'HorizontalSwimLane',
+    height: 60,
     shape: {
-      type: 'SwimLane',
+      isLane: true,
       lanes: [
         {
-          id: 'lane1',
-          style: { strokeColor: '#757575' },
-          height: 60,
-          width: 150,
           header: {
-            width: 50,
             height: 50,
-            style: { strokeColor: '#757575', fontSize: 11 },
+            style: {
+              fontSize: 11,
+              strokeColor: '#757575',
+            },
+            width: 50,
           },
+          height: 560,
+          id: 'HorizontalLane1',
+          style: { strokeColor: '#757575' },
+          width: 860,
         },
       ],
+      type: 'SwimLane',
       orientation: 'Horizontal',
-      isLane: true,
     },
-    height: 60,
     width: 140,
-    offsetX: 70,
-    offsetY: 30,
   },
   {
-    id: 'stackCanvas2',
     addInfo: { tooltip: 'Vertical swimlane' },
+    height: 140,
+    id: 'VerticalSwimLane',
     shape: {
-      type: 'SwimLane',
+      isLane: true,
       lanes: [
         {
-          id: 'lane1',
-          style: { strokeColor: '#757575' },
-          height: 150,
-          width: 60,
           header: {
-            width: 50,
             height: 50,
-            style: { strokeColor: '#757575', fontSize: 11 },
+            style: {
+              fontSize: 11,
+              strokeColor: '#757575',
+            },
+            width: 50,
           },
+          height: 560,
+          id: 'VerticalLane1',
+          style: { strokeColor: '#757575' },
+          width: 860,
         },
       ],
+      type: 'SwimLane',
       orientation: 'Vertical',
-      isLane: true,
     },
-    height: 140,
     width: 60,
-    offsetX: 70,
-    offsetY: 30,
   },
   {
     id: 'verticalPhase',
@@ -235,6 +290,7 @@ const swimlaneShapes = [
     style: { strokeColor: '#757575' },
   },
 ];
+
 const connectorSymbols = [
   {
     id: 'Link1',
@@ -286,13 +342,23 @@ const connectorSymbols = [
     },
   },
 ];
+
 const contextMenu = {
   show: true,
   items: [
     {
       id: 'Add',
       text: 'Add',
-      items: [{ text: 'Add Event', iconCss: 'MVD', id: 'AddEvent' }],
+      items: [
+        { text: 'Event', iconCss: 'MVD', id: 'Add_Event' },
+        { text: 'Task', iconCss: 'MVD', id: 'Add_Activity_Task' },
+        { text: 'Transaction', iconCss: 'MVD', id: 'Add_Activity_SubProcess' },
+        { text: 'Gateway', iconCss: 'MVD', id: 'Add_Gateway' },
+        { text: 'DataObject', iconCss: 'MVD', id: 'Add_DataObject' },
+        { text: 'DataSource', iconCss: 'MVD', id: 'Add_DataSource' },
+        { text: 'Message', iconCss: 'MVD', id: 'Add_Message' },
+        { text: 'Annotation', iconCss: 'MVD', id: 'Add_Annotation' },
+      ],
     },
     {
       id: 'Activity-Type',
@@ -323,6 +389,24 @@ const contextMenu = {
           text: 'Ad-Hoc',
           iconCss: 'e-adhocs e-bpmn-icons e-adhoc',
           id: 'AdhocAdhoc',
+        },
+      ],
+    },
+    {
+      id: 'Association',
+      iconCss: 'e-bpmn-icons e-Flow',
+      text: 'Association',
+      items: [
+        { text: 'Default', iconCss: 'e-gate e-bpmn-icons e-X', id: 'Default' },
+        {
+          text: 'Directional',
+          iconCss: 'e-gate e-bpmn-icons e-X',
+          id: 'BiDirectional',
+        },
+        {
+          text: 'BiDirectional',
+          iconCss: 'e-gate e-bpmn-icons e-X',
+          id: 'BiDirectional',
         },
       ],
     },
@@ -426,6 +510,28 @@ const contextMenu = {
           iconCss: 'e-event e-bpmn-icons e-NoninterruptingIntermediate',
         },
         { text: 'End', id: 'End', iconCss: 'e-event e-bpmn-icons e-NoneEnd' },
+      ],
+    },
+    {
+      id: 'Flow',
+      iconCss: 'e-bpmn-icons e-Flow',
+      text: 'Flow',
+      items: [
+        {
+          text: 'Association ',
+          iconCss: 'e-gate e-bpmn-icons e-X',
+          id: 'Association ',
+        },
+        {
+          text: 'Message ',
+          iconCss: 'e-gate e-bpmn-icons e-X',
+          id: 'Message  ',
+        },
+        {
+          text: 'Sequence ',
+          iconCss: 'e-gate e-bpmn-icons e-X',
+          id: 'Sequence ',
+        },
       ],
     },
     {
@@ -635,335 +741,7 @@ const contextMenu = {
   showCustomMenuOnly: true,
 };
 
-var nodes = [
-  {
-    id: 'start',
-    width: 40,
-    height: 40,
-    offsetX: 35,
-    offsetY: 180,
-    shape: {
-      type: 'Bpmn',
-      shape: 'Event',
-      event: { event: 'Start' },
-    },
-  },
-  {
-    id: 'subProcess',
-    width: 520,
-    height: 250,
-    offsetX: 355,
-    offsetY: 180,
-    constraints:
-      ej.diagrams.NodeConstraints.Default |
-      ej.diagrams.NodeConstraints.AllowDrop,
-    shape: {
-      shape: 'Activity',
-      type: 'Bpmn',
-      activity: {
-        activity: 'SubProcess',
-        subProcess: {
-          type: 'Transaction',
-          collapsed: false,
-          processes: [
-            'processesStart',
-            'service',
-            'compensation',
-            'processesTask',
-            'error',
-            'processesEnd',
-            'user',
-            'subProcessesEnd',
-          ],
-        },
-      },
-    },
-  },
-  {
-    id: 'hazardEnd',
-    width: 40,
-    height: 40,
-    offsetX: 305,
-    offsetY: 370,
-    shape: {
-      type: 'Bpmn',
-      shape: 'Event',
-      event: { event: 'End' },
-    },
-    annotations: [
-      {
-        id: 'label2',
-        content: 'Hazard',
-        style: { fill: 'white', color: 'black' },
-        verticalAlignment: 'Top',
-        margin: { top: 20 },
-      },
-    ],
-  },
-  {
-    id: 'cancelledEnd',
-    width: 40,
-    height: 40,
-    offsetX: 545,
-    offsetY: 370,
-    shape: {
-      type: 'Bpmn',
-      shape: 'Event',
-      event: { event: 'End' },
-    },
-    annotations: [
-      {
-        id: 'cancelledEndLabel2',
-        content: 'Cancelled',
-        style: { fill: 'white', color: 'black' },
-        verticalAlignment: 'Top',
-        margin: { top: 20 },
-      },
-    ],
-  },
-  {
-    id: 'end',
-    width: 40,
-    height: 40,
-    offsetX: 665,
-    offsetY: 180,
-    shape: {
-      type: 'Bpmn',
-      shape: 'Event',
-      event: { event: 'End' },
-    },
-  },
-  {
-    id: 'processesStart',
-    width: 30,
-    height: 30,
-    shape: {
-      type: 'Bpmn',
-      shape: 'Event',
-      event: { event: 'Start' },
-    },
-    margin: { left: 40, top: 80 },
-  },
-  {
-    id: 'service',
-    style: { fill: '#6FAAB0' },
-    width: 95,
-    height: 70,
-    shape: {
-      type: 'Bpmn',
-      shape: 'Activity',
-      activity: {
-        activity: 'Task',
-        task: {
-          type: 'Service',
-          loop: 'parallelmultiinstance',
-        },
-      },
-    },
-    annotations: [
-      {
-        id: 'serviceLabel2',
-        content: 'Book hotel',
-        offset: { x: 0.5, y: 0.5 },
-        style: { color: 'white' },
-      },
-    ],
-    margin: { left: 110, top: 20 },
-  },
-  {
-    id: 'compensation',
-    width: 30,
-    height: 30,
-    shape: {
-      type: 'Bpmn',
-      shape: 'Event',
-      event: { event: 'Intermediate', trigger: 'Compensation' },
-    },
-    margin: { left: 170, top: 100 },
-  },
-  {
-    id: 'processesTask',
-    style: { fill: '#F6B53F' },
-    width: 95,
-    height: 70,
-    shape: {
-      type: 'Bpmn',
-      shape: 'Activity',
-      activity: {
-        activity: 'Task',
-        task: {
-          type: 'Service',
-        },
-      },
-    },
-    annotations: [
-      {
-        id: 'serviceLabel2',
-        content: 'Charge credit card',
-        offset: { x: 0.5, y: 0.6 },
-        style: { color: 'white' },
-      },
-    ],
-    margin: { left: 290, top: 20 },
-  },
-  {
-    id: 'error',
-    width: 30,
-    height: 30,
-    shape: {
-      type: 'Bpmn',
-      shape: 'Event',
-      event: {
-        event: 'Intermediate',
-        trigger: 'Error',
-      },
-    },
-    margin: { left: 350, top: 100 },
-  },
-  {
-    id: 'processesEnd',
-    width: 30,
-    height: 30,
-    shape: {
-      type: 'Bpmn',
-      shape: 'Event',
-      event: { event: 'End' },
-    },
-    margin: { left: 440, top: 80 },
-  },
-  {
-    id: 'user',
-    style: { fill: '#E94649' },
-    width: 90,
-    height: 80,
-    shape: {
-      type: 'Bpmn',
-      shape: 'Activity',
-      activity: {
-        activity: 'Task',
-        task: {
-          type: 'User',
-          Compensation: true,
-          offset: { x: 0.5, y: 1 },
-        },
-      },
-    },
-    annotations: [
-      {
-        id: 'serviceLabel2',
-        content: 'Cancel hotel reservation',
-        offset: { x: 0.5, y: 0.6 },
-        style: { color: 'white' },
-      },
-    ],
-    margin: { left: 240, top: 160 },
-  },
-  {
-    id: 'subProcessesEnd',
-    width: 30,
-    height: 30,
-    shape: {
-      type: 'Bpmn',
-      shape: 'Event',
-      event: { event: 'End' },
-    },
-    margin: { left: 440, top: 210 },
-  },
-];
-var connectors = [
-  { id: 'connector1', sourceID: 'start', targetID: 'subProcess' },
-  {
-    id: 'connector2',
-    sourceID: 'subProcess',
-    sourcePortID: 'success',
-    targetID: 'end',
-  },
-  {
-    id: 'connector3',
-    sourceID: 'subProcess',
-    sourcePortID: 'failure',
-    targetID: 'hazardEnd',
-    type: 'Orthogonal',
-    segments: [{ type: 'Orthogonal', length: 50, direction: 'Bottom' }],
-    annotations: [
-      {
-        id: 'connector3Label2',
-        content: 'Booking system failure',
-        offset: 0.5,
-        style: { fill: 'white' },
-      },
-    ],
-  },
-  {
-    id: 'connector4',
-    sourceID: 'subProcess',
-    sourcePortID: 'cancel',
-    targetID: 'cancelledEnd',
-    type: 'Orthogonal',
-    segments: [{ type: 'Orthogonal', length: 50, direction: 'Bottom' }],
-  },
-  {
-    id: 'connector5',
-    sourceID: 'processesStart',
-    targetID: 'service',
-    type: 'Orthogonal',
-  },
-  { id: 'connector6', sourceID: 'service', targetID: 'processesTask' },
-  {
-    id: 'connector7',
-    sourceID: 'processesTask',
-    targetID: 'processesEnd',
-    type: 'Orthogonal',
-  },
-  {
-    id: 'connector8',
-    sourceID: 'compensation',
-    targetID: 'user',
-    type: 'Orthogonal',
-    shape: {
-      type: 'Bpmn',
-      flow: 'association',
-      association: 'Directional',
-    },
-    style: {
-      strokeDashArray: '2,2',
-    },
-    segments: [
-      { type: 'Orthogonal', length: 30, direction: 'Bottom' },
-      { type: 'Orthogonal', length: 80, direction: 'Right' },
-    ],
-  },
-  {
-    id: 'connector9',
-    sourceID: 'error',
-    targetID: 'subProcessesEnd',
-    type: 'Orthogonal',
-    annotations: [
-      {
-        id: 'connector9Label2',
-        content: 'Cannot charge card',
-        offset: 0.5,
-        style: { fill: 'white', color: 'black' },
-      },
-    ],
-    segments: [{ type: 'Orthogonal', length: 50, direction: 'Bottom' }],
-  },
-];
-
-window.diagram = new ej.diagrams.Diagram({
-  width: '100%',
-  height: '800px',
-  nodes: nodes,
-  connectors: connectors,
-  contextMenuSettings: contextMenu,
-  contextMenuOpen: contextMenuOpen,
-  contextMenuClick: contextMenuClick,
-  snapSettings: { constraints: ej.diagrams.SnapConstraints.ShowLines },
-});
-diagram.appendTo('#diagram');
-diagram.fitToPage();
-
-var palette = new ej.diagrams.SymbolPalette({
+const palette = new ej.diagrams.SymbolPalette({
   expandMode: 'Multiple',
   symbolMargin: { left: 10, right: 10, top: 10, bottom: 10 },
   symbolHeight: 50,
@@ -973,14 +751,12 @@ var palette = new ej.diagrams.SymbolPalette({
       id: 'Bpmn',
       expanded: true,
       symbols: bpmnShapes,
-      iconCss: 'shapes',
       title: 'BPMN Shapes',
     },
     {
       id: 'Connector',
       expanded: true,
-      symbols: getConnectors(),
-      iconCss: 'shapes',
+      symbols: connectorSymbols,
       title: 'Connectors',
     },
     {
@@ -991,328 +767,434 @@ var palette = new ej.diagrams.SymbolPalette({
     },
   ],
   width: '100%',
-  height: '800px',
-  getNodeDefaults: function (symbol) {
-    symbol.style.strokeColor = '#757575';
-  },
+  height: '100%',
 });
+
+let nodes = [];
+let connectors = [];
+
+let diagram = new ej.diagrams.Diagram({
+  connectors,
+  contextMenuSettings: contextMenu,
+  height: '800px',
+  nodes,
+  snapSettings: {
+    constraints: ej.diagrams.SnapConstraints.ShowLines,
+  },
+  width: '100%',
+  collectionChange: collectionChange,
+  contextMenuOpen: contextMenuOpen,
+  contextMenuClick: contextMenuClick,
+});
+window.diagram = diagram;
+
+diagram.appendTo('#diagramBPMN');
+diagram.fitToPage({ mode: 'Width' });
 palette.appendTo('#symbolpalette');
 
-function getConnectors() {
-  var connectorSymbols = [
-    {
-      id: 'Link1',
-      type: 'Orthogonal',
-      sourcePoint: { x: 0, y: 0 },
-      targetPoint: { x: 40, y: 40 },
-      targetDecorator: {
-        shape: 'Arrow',
-        style: { strokeColor: '#757575', fill: '#757575' },
-      },
-      style: { strokeWidth: 2, strokeColor: '#757575' },
-    },
-    {
-      id: 'Link2',
-      type: 'Orthogonal',
-      sourcePoint: { x: 0, y: 0 },
-      targetPoint: { x: 40, y: 40 },
-      targetDecorator: {
-        shape: 'Arrow',
-        style: { strokeColor: '#757575', fill: '#757575' },
-      },
-      style: { strokeWidth: 2, strokeDashArray: '4 4', strokeColor: '#757575' },
-    },
-    {
-      id: 'Link3',
-      type: 'Straight',
-      sourcePoint: { x: 0, y: 0 },
-      targetPoint: { x: 40, y: 40 },
-      targetDecorator: {
-        shape: 'Arrow',
-        style: { strokeColor: '#757575', fill: '#757575' },
-      },
-      style: { strokeWidth: 2, strokeColor: '#757575' },
-    },
-    {
-      id: 'link4',
-      sourcePoint: { x: 0, y: 0 },
-      targetPoint: { x: 40, y: 40 },
-      type: 'Orthogonal',
-      targetDecorator: { style: { strokeColor: '#757575', fill: '#757575' } },
-      shape: {
-        type: 'Bpmn',
-        flow: 'Association',
-        association: 'Directional',
-      },
-      style: {
-        strokeDashArray: '2,2',
-        strokeColor: '#757575',
-      },
-    },
-  ];
-  return connectorSymbols;
-}
 function contextMenuClick(args) {
-  if (
-    diagram.selectedItems.nodes.length > 0 &&
-    args.item.parentObj.target === undefined
-  ) {
-    const node = diagram.selectedItems.nodes[0];
-    let bpmnShape = node.shape;
-    if (args.item.id === 'AddEvent') {
-      console.log('ACA');
-    } else if (args.item.id === 'Delete') {
-      diagram.remove(node);
-    } else {
-      if (args.item.iconCss.indexOf('e-adhocs') > -1) {
-        bpmnShape.activity.subProcess.adhoc =
-          args.item.id === 'AdhocNone' ? false : true;
-      }
-      if (args.item.iconCss.indexOf('e-event') > -1) {
-        bpmnShape.event.event = args.item.id;
-      }
-      if (args.item.iconCss.indexOf('e-trigger') > -1) {
-        bpmnShape.event.trigger = args.item.text;
-      }
-      if (args.item.iconCss.indexOf('e-loop') > -1) {
-        let loop = args.item.id === 'LoopNone' ? 'None' : args.item.id;
-        if (bpmnShape.activity.activity === 'Task') {
-          bpmnShape.activity.task.loop = loop;
-        }
-        if (bpmnShape.activity.activity === 'SubProcess') {
-          bpmnShape.activity.subProcess.loop = loop;
-        }
-      }
-      if (args.item.iconCss.indexOf('e-compensation') > -1) {
-        let compensation = args.item.id === 'CompensationNone' ? false : true;
-        if (bpmnShape.activity.activity === 'Task') {
-          bpmnShape.activity.task.compensation = compensation;
-        }
-        if (bpmnShape.activity.activity === 'SubProcess') {
-          bpmnShape.activity.subProcess.compensation = compensation;
-        }
-      }
-      if (args.item.iconCss.indexOf('e-call') > -1) {
-        let compensations = args.item.id === 'CallNone' ? false : true;
-        if (bpmnShape.activity.activity === 'Task') {
-          bpmnShape.activity.task.call = compensations;
-        }
-      }
-      if (
-        args.item.id === 'CollapsedSubProcess' ||
-        args.item.id === 'ExpandedSubProcess'
-      ) {
-        if (args.item.id === 'ExpandedSubProcess') {
-          bpmnShape.activity.activity = 'SubProcess';
-          bpmnShape.activity.subProcess.collapsed = false;
+  try {
+    if (
+      args.item.parentObj.target === undefined &&
+      (diagram.selectedItems.nodes.length ||
+        diagram.selectedItems.connectors.length)
+    ) {
+      const itemId = args.item.id;
+      const node = diagram.selectedItems.nodes[0];
+      const connector = diagram.selectedItems.connectors[0];
+      if (node) {
+        let bpmnShape = node.shape;
+        if (itemId.startsWith('Add_')) {
+          handleOnClickContextMenuAdd({ itemId, node });
+        } else if (itemId === 'Delete') {
+          diagram.remove(node);
         } else {
-          bpmnShape.activity.activity = 'SubProcess';
-          bpmnShape.activity.subProcess.collapsed = true;
+          if (args.item.iconCss.indexOf('e-adhocs') > -1) {
+            bpmnShape.activity.subProcess.adhoc =
+              itemId === 'AdhocNone' ? false : true;
+          }
+          if (args.item.iconCss.indexOf('e-event') > -1) {
+            bpmnShape.event.event = itemId;
+          }
+          if (args.item.iconCss.indexOf('e-trigger') > -1) {
+            bpmnShape.event.trigger = args.item.text;
+          }
+          if (args.item.iconCss.indexOf('e-loop') > -1) {
+            let loop = itemId === 'LoopNone' ? 'None' : itemId;
+            if (bpmnShape.activity.activity === 'Task') {
+              bpmnShape.activity.task.loop = loop;
+            }
+            if (bpmnShape.activity.activity === 'SubProcess') {
+              bpmnShape.activity.subProcess.loop = loop;
+            }
+          }
+          if (args.item.iconCss.indexOf('e-compensation') > -1) {
+            let compensation = itemId === 'CompensationNone' ? false : true;
+            if (bpmnShape.activity.activity === 'Task') {
+              bpmnShape.activity.task.compensation = compensation;
+            }
+            if (bpmnShape.activity.activity === 'SubProcess') {
+              bpmnShape.activity.subProcess.compensation = compensation;
+            }
+          }
+          if (args.item.iconCss.indexOf('e-call') > -1) {
+            let compensations = itemId === 'CallNone' ? false : true;
+            if (bpmnShape.activity.activity === 'Task') {
+              bpmnShape.activity.task.call = compensations;
+            }
+          }
+          if (
+            itemId === 'CollapsedSubProcess' ||
+            itemId === 'ExpandedSubProcess'
+          ) {
+            if (itemId === 'ExpandedSubProcess') {
+              bpmnShape.activity.activity = 'SubProcess';
+              bpmnShape.activity.subProcess.collapsed = false;
+            } else {
+              bpmnShape.activity.activity = 'SubProcess';
+              bpmnShape.activity.subProcess.collapsed = true;
+            }
+          }
+          if (args.item.iconCss.indexOf('e-boundry') > -1) {
+            let call = itemId;
+            if (itemId !== 'Default') {
+              call = itemId === 'BoundryEvent' ? 'Event' : 'Call';
+            }
+            bpmnShape.activity.subProcess.boundary = call;
+          }
+          if (args.item.iconCss.indexOf('e-data') > -1) {
+            let data = itemId === 'DataObjectNone' ? 'None' : itemId;
+            bpmnShape.dataObject.type = data;
+          }
+          if (args.item.iconCss.indexOf('e-collection') > -1) {
+            let collection = itemId === 'Collectioncollection';
+            bpmnShape.dataObject.collection = collection;
+          }
+          if (args.item.iconCss.indexOf('e-task') > -1) {
+            let task = task === 'TaskNone' ? 'None' : itemId;
+            if (bpmnShape.activity.activity === 'Task') {
+              bpmnShape.activity.task.type = task;
+            }
+          }
+          if (args.item.iconCss.indexOf('e-gate') > -1) {
+            let gate = itemId.replace('Gateway', '');
+            if (bpmnShape.shape === 'Gateway') {
+              bpmnShape.gateway.type = gate;
+            }
+          }
+          diagram.dataBind();
         }
+      } else {
+        console.log('contextMenuClick ', args);
       }
-      if (args.item.iconCss.indexOf('e-boundry') > -1) {
-        let call = args.item.id;
-        if (args.item.id !== 'Default') {
-          call = args.item.id === 'BoundryEvent' ? 'Event' : 'Call';
-        }
-        bpmnShape.activity.subProcess.boundary = call;
-      }
-      if (args.item.iconCss.indexOf('e-data') > -1) {
-        let data = args.item.id === 'DataObjectNone' ? 'None' : args.item.id;
-        bpmnShape.dataObject.type = data;
-      }
-      if (args.item.iconCss.indexOf('e-collection') > -1) {
-        let collection = args.item.id === 'Collectioncollection';
-        bpmnShape.dataObject.collection = collection;
-      }
-      if (args.item.iconCss.indexOf('e-task') > -1) {
-        let task = task === 'TaskNone' ? 'None' : args.item.id;
-        if (bpmnShape.activity.activity === 'Task') {
-          bpmnShape.activity.task.type = task;
-        }
-      }
-      if (args.item.iconCss.indexOf('e-gate') > -1) {
-        let gate = args.item.id.replace('Gateway', '');
-        if (bpmnShape.shape === 'Gateway') {
-          bpmnShape.gateway.type = gate;
-        }
-      }
-      diagram.dataBind();
     }
+  } catch (error) {
+    console.error(error);
   }
 }
+
 function contextMenuOpen(args) {
-  var hiddenId = [];
+  let hiddenId = [];
   if (args.element.className !== 'e-menu-parent e-ul ') {
     hiddenId = [
-      'Adhoc',
-      'Loop',
-      'taskCompensation',
+      //'Add',
       'Activity-Type',
+      'Adhoc',
       'Boundry',
+      'Collection',
       'DataObject',
-      'collection',
       'DeftCall',
-      'TriggerResult',
       'EventType',
-      'TaskType',
       'GateWay',
-    ];
+      'Loop',
+      'TaskCompensation',
+      'TaskType',
+      'TriggerResult',
+      //'Delete',
+    ]; //same order than contextMenu.items array
   }
-  if (diagram.selectedItems.nodes.length) {
-    for (var i = 0; i < args.items.length; i++) {
-      var item = args.items[i];
-      var bpmnShape = diagram.selectedItems.nodes[0].shape;
-      if (bpmnShape.shape !== 'DataObject' && bpmnShape.shape !== 'Gateway') {
-        if (item.text === 'Ad-Hoc') {
-          if (bpmnShape.activity.activity === 'SubProcess') {
-            hiddenId.splice(hiddenId.indexOf(item.id), 1);
+  if (
+    diagram.selectedItems.nodes.length ||
+    diagram.selectedItems.connectors.length
+  ) {
+    const node = diagram.selectedItems.nodes[0];
+    const connector = diagram.selectedItems.connectors[0];
+    if (node.isLane || node.isPhase) {
+      hiddenId = [
+        'Add',
+        'Activity-Type',
+        'Adhoc',
+        'Association',
+        'Boundry',
+        'Collection',
+        'DataObject',
+        'DeftCall',
+        'EventType',
+        'Flow',
+        'GateWay',
+        'Loop',
+        'TaskCompensation',
+        'TaskType',
+        'TriggerResult',
+        'Delete',
+      ];
+    } else if (node) {
+      for (let i = 0; i < args.items.length; i++) {
+        let item = args.items[i];
+        let bpmnShape = diagram.selectedItems.nodes[0].shape;
+        if (!['DataObject', 'Gateway'].includes(bpmnShape.shape)) {
+          if (item.text === 'Ad-Hoc') {
+            if (bpmnShape.activity.activity === 'SubProcess') {
+              hiddenId.splice(hiddenId.indexOf(item.id), 1);
+            }
           }
-        }
-        if (
-          item.text === 'Loop' ||
-          item.text === 'Compensation' ||
-          item.text === 'Activity-Type'
-        ) {
-          if (bpmnShape.shape === 'Activity') {
-            hiddenId.splice(hiddenId.indexOf(item.id), 1);
-          }
-        }
-        if (item.text === 'Boundry') {
-          if (bpmnShape.activity.activity === 'SubProcess') {
-            hiddenId.splice(hiddenId.indexOf(item.id), 1);
-          }
-        }
-      }
-      if (item.text === 'Data Object') {
-        if (bpmnShape.shape === 'DataObject') {
-          hiddenId.splice(hiddenId.indexOf(item.id), 1);
-        }
-      }
-      if (item.text === 'Collection') {
-        if (bpmnShape.shape === 'DataObject') {
-          hiddenId.splice(hiddenId.indexOf(item.id), 1);
-        }
-      }
-      if (item.text === 'Call') {
-        if (
-          bpmnShape.shape === 'Activity' &&
-          bpmnShape.activity.activity === 'Task'
-        ) {
-          hiddenId.splice(hiddenId.indexOf(item.id), 1);
-        }
-      }
-      if (item.text === 'Trigger Result') {
-        if (bpmnShape.shape === 'Event') {
-          hiddenId.splice(hiddenId.indexOf(item.id), 1);
-        }
-      }
-      if (item.text === 'Event Type') {
-        if (bpmnShape.shape === 'Event') {
-          hiddenId.splice(hiddenId.indexOf(item.id), 1);
-        }
-      }
-      if (item.text === 'Task Type') {
-        if (
-          bpmnShape.shape === 'Activity' &&
-          bpmnShape.activity.activity === 'Task'
-        ) {
-          hiddenId.splice(hiddenId.indexOf(item.id), 1);
-        }
-      }
-      if (item.text === 'GateWay') {
-        if (bpmnShape.shape === 'Gateway') {
-          hiddenId.splice(hiddenId.indexOf(item.id), 1);
-        }
-      }
-      if (
-        diagram.selectedItems.nodes.length > 0 &&
-        args.parentItem &&
-        args.parentItem.id === 'TriggerResult' &&
-        bpmnShape.shape === 'Event'
-      ) {
-        var shape = bpmnShape;
-        if (
-          item.text !== 'None' &&
-          (item.text === shape.event.event || item.text === shape.event.trigger)
-        ) {
-          hiddenId.push(item.id);
-        }
-        if (shape.event.event === 'Start') {
           if (
-            item.text === 'Cancel' ||
-            item.text === 'Terminate' ||
-            item.text === 'Link'
-          ) {
-            hiddenId.push(item.id);
-          }
-        }
-        if (
-          shape.event.event === 'NonInterruptingStart' ||
-          item.text === 'Link'
-        ) {
-          if (
-            item.text === 'Cancel' ||
-            item.text === 'Terminate' ||
+            item.text === 'Loop' ||
             item.text === 'Compensation' ||
-            item.text === 'Error' ||
-            item.text === 'None'
+            item.text === 'Activity-Type'
+          ) {
+            if (bpmnShape.shape === 'Activity') {
+              hiddenId.splice(hiddenId.indexOf(item.id), 1);
+            }
+          }
+          if (item.text === 'Boundry') {
+            if (bpmnShape.activity.activity === 'SubProcess') {
+              hiddenId.splice(hiddenId.indexOf(item.id), 1);
+            }
+          }
+        }
+        if (item.text === 'Call') {
+          if (
+            bpmnShape.shape === 'Activity' &&
+            bpmnShape.activity.activity === 'Task'
+          ) {
+            hiddenId.splice(hiddenId.indexOf(item.id), 1);
+          }
+        }
+        if (item.text === 'Collection') {
+          if (bpmnShape.shape === 'DataObject') {
+            hiddenId.splice(hiddenId.indexOf(item.id), 1);
+          }
+        }
+        if (item.text === 'Data Object') {
+          if (bpmnShape.shape === 'DataObject') {
+            hiddenId.splice(hiddenId.indexOf(item.id), 1);
+          }
+        }
+        if (item.text === 'Event Type') {
+          if (bpmnShape.shape === 'Event') {
+            hiddenId.splice(hiddenId.indexOf(item.id), 1);
+          }
+        }
+        if (item.text === 'GateWay') {
+          if (bpmnShape.shape === 'Gateway') {
+            hiddenId.splice(hiddenId.indexOf(item.id), 1);
+          }
+        }
+        if (item.text === 'Task Type') {
+          if (
+            bpmnShape.shape === 'Activity' &&
+            bpmnShape.activity.activity === 'Task'
+          ) {
+            hiddenId.splice(hiddenId.indexOf(item.id), 1);
+          }
+        }
+        if (item.text === 'Trigger Result') {
+          if (bpmnShape.shape === 'Event') {
+            hiddenId.splice(hiddenId.indexOf(item.id), 1);
+          }
+        }
+        if (
+          diagram.selectedItems.nodes.length > 0 &&
+          args.parentItem &&
+          args.parentItem.id === 'TriggerResult' &&
+          bpmnShape.shape === 'Event'
+        ) {
+          let shape = bpmnShape;
+          if (
+            item.text !== 'None' &&
+            (item.text === shape.event.event ||
+              item.text === shape.event.trigger)
           ) {
             hiddenId.push(item.id);
           }
-        }
-        if (shape.event.event === 'Intermediate') {
-          if (item.text === 'Terminate') {
-            hiddenId.push(item.id);
+          if (shape.event.event === 'Start') {
+            if (
+              item.text === 'Cancel' ||
+              item.text === 'Terminate' ||
+              item.text === 'Link'
+            ) {
+              hiddenId.push(item.id);
+            }
           }
-        }
-        if (shape.event.event === 'NonInterruptingIntermediate') {
           if (
-            item.text === 'Cancel' ||
-            item.text === 'Terminate' ||
-            item.text === 'Compensation' ||
-            item.text === 'Error' ||
-            item.text === 'None' ||
+            shape.event.event === 'NonInterruptingStart' ||
             item.text === 'Link'
           ) {
-            hiddenId.push(item.id);
+            if (
+              item.text === 'Cancel' ||
+              item.text === 'Terminate' ||
+              item.text === 'Compensation' ||
+              item.text === 'Error' ||
+              item.text === 'None'
+            ) {
+              hiddenId.push(item.id);
+            }
+          }
+          if (shape.event.event === 'Intermediate') {
+            if (item.text === 'Terminate') {
+              hiddenId.push(item.id);
+            }
+          }
+          if (shape.event.event === 'NonInterruptingIntermediate') {
+            if (
+              item.text === 'Cancel' ||
+              item.text === 'Terminate' ||
+              item.text === 'Compensation' ||
+              item.text === 'Error' ||
+              item.text === 'None' ||
+              item.text === 'Link'
+            ) {
+              hiddenId.push(item.id);
+            }
+          }
+          if (shape.event.event === 'ThrowingIntermediate') {
+            if (
+              item.text === 'Cancel' ||
+              item.text === 'Terminate' ||
+              item.text === 'Timer' ||
+              item.text === 'Error' ||
+              item.text === 'None' ||
+              item.text === 'Pareller' ||
+              item.text === 'Conditional'
+            ) {
+              hiddenId.push(item.id);
+            }
+          }
+          if (shape.event.event === 'End') {
+            if (
+              item.text === 'Parallel' ||
+              item.text === 'Timer' ||
+              item.text === 'Conditional' ||
+              item.text === 'Link'
+            ) {
+              hiddenId.push(item.id);
+            }
           }
         }
-        if (shape.event.event === 'ThrowingIntermediate') {
-          if (
-            item.text === 'Cancel' ||
-            item.text === 'Terminate' ||
-            item.text === 'Timer' ||
-            item.text === 'Error' ||
-            item.text === 'None' ||
-            item.text === 'Pareller' ||
-            item.text === 'Conditional'
-          ) {
+        if (
+          diagram.selectedItems.nodes.length > 0 &&
+          args.parentItem &&
+          args.parentItem.id === 'EventType' &&
+          bpmnShape.shape === 'Event'
+        ) {
+          if (item.text === bpmnShape.event.event) {
             hiddenId.push(item.id);
           }
-        }
-        if (shape.event.event === 'End') {
-          if (
-            item.text === 'Parallel' ||
-            item.text === 'Timer' ||
-            item.text === 'Conditional' ||
-            item.text === 'Link'
-          ) {
-            hiddenId.push(item.id);
-          }
-        }
-      }
-      if (
-        diagram.selectedItems.nodes.length > 0 &&
-        args.parentItem &&
-        args.parentItem.id === 'EventType' &&
-        bpmnShape.shape === 'Event'
-      ) {
-        if (item.text === bpmnShape.event.event) {
-          hiddenId.push(item.id);
         }
       }
     }
   }
+
   args.hiddenItems = hiddenId;
+}
+
+function collectionChange(args) {
+  const { element, state, type } = args;
+  if (element instanceof Node) {
+    element.constraints =
+      ej.diagrams.NodeConstraints.Default &
+      ~ej.diagrams.NodeConstraints.Rotate &
+      ~ej.diagrams.NodeConstraints.Resize;
+  } else if (element instanceof Connector) {
+    //element.constraints = ej.diagrams.ConnectorConstraints.Select & ~ej.diagrams.ConnectorConstraints.Default
+  }
+  console.log('collectionChange ', args);
+}
+
+function handleOnClickContextMenuAdd({ itemId, node }) {
+  const [, shape, activity] = itemId.split('_');
+  const diagram = ej.base.getComponent('diagramBPMN', 'diagram');
+  const nodeTemplate = bpmnShapes.find(
+    (e) =>
+      e.shape.shape === shape &&
+      (!activity || e.shape.activity.activity === activity)
+  );
+  if (nodeTemplate) {
+    connectNewNode({ node, nodeTemplate });
+  } else {
+    connectNewAnnotation({ node });
+  }
+  diagram.dataBind();
+  diagram.refresh();
+}
+
+function connectNewNode({ node, nodeTemplate }) {
+  const nodeToAdd = { ...nodeTemplate };
+  delete nodeToAdd.id;
+  let { offsetX, offsetY, segmentLength } = getNodeOffsetsRelativeTo({ node });
+  nodeToAdd.offsetX = offsetX;
+  nodeToAdd.offsetY = offsetY;
+  const nodeAdded = diagram.add(nodeToAdd);
+  const targetID = nodeAdded.id;
+  const connectorToAdd = {
+    sourceID: node.id,
+    targetID,
+    type: 'Orthogonal',
+    shape: {
+      type: 'Bpmn',
+      flow: 'Association',
+      association: 'Default',
+    },
+  };
+  if (segmentLength) {
+    connectorToAdd.segments = [
+      {
+        type: 'Orthogonal',
+        direction: 'Bottom',
+        length: segmentLength,
+      },
+    ];
+  }
+  diagram.add(connectorToAdd);
+  //diagram.dataBind();
+}
+
+function connectNewAnnotation({ node }) {
+  const diagram = ej.base.getComponent('diagramBPMN', 'diagram');
+  if (!node.shape.annotations) node.shape.annotations = [];
+  const annotationQuantity =
+    node.shape.annotations.filter((e) => e.angle === 320).length ?? null;
+  const annotationLength = annotationQuantity
+    ? 100 * (annotationQuantity + 1)
+    : 100;
+  const annotation = {
+    angle: 316,
+    length: annotationLength,
+    nodeId: node.id,
+    text: 'Annotation',
+  };
+  node.shape.annotations.push(annotation);
+  //diagram.refresh();
+}
+
+function getNodeOffsetsRelativeTo({ node }) {
+  const diagram = ej.base.getComponent('diagramBPMN', 'diagram');
+  const connectorsStartedInNode = diagram.connectors.filter(
+    (e) => e.sourceID === node.id
+  );
+  let offsetX = node.offsetX + 250;
+  let offsetY = node.offsetY;
+  let segmentLength = null;
+  if (connectorsStartedInNode.length) {
+    const targetNodesIds = connectorsStartedInNode.map((e) => e.targetID);
+    const targetNodesSameOffsetX = diagram.nodes.filter(
+      (e) => targetNodesIds.includes(e.id) && e.offsetX === offsetX
+    );
+    offsetY = targetNodesSameOffsetX.length
+      ? node.offsetY + 100 * targetNodesSameOffsetX.length
+      : node.offsetY;
+    segmentLength = 100 * targetNodesSameOffsetX.length;
+  }
+  return { offsetX, offsetY, segmentLength };
 }
