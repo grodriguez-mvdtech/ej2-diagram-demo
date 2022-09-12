@@ -207,10 +207,10 @@ const swimlaneShapes = [
             },
             width: 50,
           },
-          height: 560,
+          height: 460,
           id: 'HorizontalLane1',
           style: { strokeColor: '#757575' },
-          width: 860,
+          width: 660,
         },
       ],
       type: 'SwimLane',
@@ -234,10 +234,10 @@ const swimlaneShapes = [
             },
             width: 50,
           },
-          height: 560,
+          height: 460,
           id: 'VerticalLane1',
           style: { strokeColor: '#757575' },
-          width: 860,
+          width: 660,
         },
       ],
       type: 'SwimLane',
@@ -393,24 +393,6 @@ const contextMenu = {
       ],
     },
     {
-      id: 'Association',
-      iconCss: 'e-bpmn-icons e-Flow',
-      text: 'Association',
-      items: [
-        { text: 'Default', iconCss: 'e-gate e-bpmn-icons e-X', id: 'Default' },
-        {
-          text: 'Directional',
-          iconCss: 'e-gate e-bpmn-icons e-X',
-          id: 'BiDirectional',
-        },
-        {
-          text: 'BiDirectional',
-          iconCss: 'e-gate e-bpmn-icons e-X',
-          id: 'BiDirectional',
-        },
-      ],
-    },
-    {
       id: 'Boundry',
       text: 'Boundry',
       items: [
@@ -510,28 +492,6 @@ const contextMenu = {
           iconCss: 'e-event e-bpmn-icons e-NoninterruptingIntermediate',
         },
         { text: 'End', id: 'End', iconCss: 'e-event e-bpmn-icons e-NoneEnd' },
-      ],
-    },
-    {
-      id: 'Flow',
-      iconCss: 'e-bpmn-icons e-Flow',
-      text: 'Flow',
-      items: [
-        {
-          text: 'Association ',
-          iconCss: 'e-gate e-bpmn-icons e-X',
-          id: 'Association ',
-        },
-        {
-          text: 'Message ',
-          iconCss: 'e-gate e-bpmn-icons e-X',
-          id: 'Message  ',
-        },
-        {
-          text: 'Sequence ',
-          iconCss: 'e-gate e-bpmn-icons e-X',
-          id: 'Sequence ',
-        },
       ],
     },
     {
@@ -782,7 +742,6 @@ let diagram = new ej.diagrams.Diagram({
     constraints: ej.diagrams.SnapConstraints.ShowLines,
   },
   width: '100%',
-  collectionChange: collectionChange,
   contextMenuOpen: contextMenuOpen,
   contextMenuClick: contextMenuClick,
 });
@@ -1097,19 +1056,6 @@ function contextMenuOpen(args) {
   }
 
   args.hiddenItems = hiddenId;
-}
-
-function collectionChange(args) {
-  const { element, state, type } = args;
-  if (element instanceof Node) {
-    element.constraints =
-      ej.diagrams.NodeConstraints.Default &
-      ~ej.diagrams.NodeConstraints.Rotate &
-      ~ej.diagrams.NodeConstraints.Resize;
-  } else if (element instanceof Connector) {
-    //element.constraints = ej.diagrams.ConnectorConstraints.Select & ~ej.diagrams.ConnectorConstraints.Default
-  }
-  console.log('collectionChange ', args);
 }
 
 function handleOnClickContextMenuAdd({ itemId, node }) {
