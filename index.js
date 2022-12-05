@@ -1107,21 +1107,26 @@ function connectNewNode({ node, nodeTemplate }) {
 }
 
 function connectNewAnnotation({ node }) {
-  const diagram = ej.base.getComponent('diagramBPMN', 'diagram');
-  if (!node.shape.annotations) node.shape.annotations = [];
-  const annotationQuantity =
-    node.shape.annotations.filter((e) => e.angle === 320).length ?? null;
-  const annotationLength = annotationQuantity
-    ? 100 * (annotationQuantity + 1)
-    : 100;
-  const annotation = {
-    angle: 316,
-    length: annotationLength,
-    nodeId: node.id,
-    text: 'Annotation',
-  };
-  node.shape.annotations.push(annotation);
-  //diagram.refresh();
+  diagram.addTextAnnotation(
+    { id: 'newAnnotation', text: 'New Annotation', length: 300, angle: 180 },
+    node
+  );
+
+  // const diagram = ej.base.getComponent('diagramBPMN', 'diagram');
+  // if (!node.shape.annotations) node.shape.annotations = [];
+  // const annotationQuantity =
+  //   node.shape.annotations.filter((e) => e.angle === 320).length ?? null;
+  // const annotationLength = annotationQuantity
+  //   ? 100 * (annotationQuantity + 1)
+  //   : 100;
+  // const annotation = {
+  //   angle: 316,
+  //   length: annotationLength,
+  //   nodeId: node.id,
+  //   text: 'Annotation',
+  // };
+  // node.shape.annotations.push(annotation);
+  // //diagram.refresh();
 }
 
 function getNodeOffsetsRelativeTo({ node }) {
